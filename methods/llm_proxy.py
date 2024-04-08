@@ -3,7 +3,8 @@ from openai import OpenAI
 MODEL_BASE_PARAMS = {              
             "top_p": 1,
             "frequency_penalty": 0,
-            "presence_penalty": 0
+            "presence_penalty": 0,
+            "temperature": 0,
             }
 
 class GPT4Vision:
@@ -90,6 +91,7 @@ class GPT4Vision:
             model="gpt-4-vision-preview",
             messages=messages,
             max_tokens=max_tokens,
+            **MODEL_BASE_PARAMS
         )
         return response.choices[0].message.content
         
@@ -105,9 +107,10 @@ class GPT4Vision:
             str: The content of the response from the API.
         """
         response = self.client.chat.completions.create(
-            model=model,  # or another suitable model
-            temperature=0.6,  
+            model=model,  # or another suitable model            
             messages=messages,
             max_tokens=max_tokens,
+            **MODEL_BASE_PARAMS
         )
         return response.choices[0].message.content
+
