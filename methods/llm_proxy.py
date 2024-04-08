@@ -1,5 +1,10 @@
 from openai import OpenAI
 
+MODEL_BASE_PARAMS = {              
+            "top_p": 1,
+            "frequency_penalty": 0,
+            "presence_penalty": 0
+            }
 
 class GPT4Vision:
     def __init__(self):
@@ -101,6 +106,7 @@ class GPT4Vision:
         """
         response = self.client.chat.completions.create(
             model=model,  # or another suitable model
+            temperature=0.6,  
             messages=messages,
             max_tokens=max_tokens,
         )
