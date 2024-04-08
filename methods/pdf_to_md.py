@@ -1,5 +1,5 @@
-from llm_proxy import GPT4Vision
-from pdf_utils import (extract_text_from_pdf,
+from methods.llm_proxy import GPT4Vision
+from methods.pdf_utils import (extract_text_from_pdf,
                         pdf_to_base64_images)
 
 
@@ -44,16 +44,16 @@ Output markdown formatted text:
 
 
 class ResearchMDGenerator:
-    def __init__(self, api_key):
+    def __init__(self):
         """
         Initializes the ResearchMDGenerator class with a GPT4Vision instance.
 
         Args:
             api_key (str): The API key for the OpenAI client.
         """
-        self.gpt4_vision = GPT4Vision(api_key)
+        self.gpt4_vision = GPT4Vision()
 
-    def generate_md_from_pdf(self, pdf_path, output_file):
+    def generate_md_from_pdf_vision(self, pdf_path, output_file):
         """
         Generates a markdown file from a PDF by using the GPT-4 Vision API.
 
@@ -65,16 +65,43 @@ class ResearchMDGenerator:
         pdf_text = extract_text_from_pdf(pdf_path)
 
         # Convert PDF to base64 images
-        base64_images = pdf_to_base64_images(pdf_path)
+        base64_images = pdf_to_base64_images(pdf_path)    
 
         # Create user prompt
         user_prompt = USER_PROMPT_TEMPLATE.format(pdf_text)
 
         # Create vision messages
         messages = self.gpt4_vision.create_vision_messages(user_prompt, SYSTEM_PROMPT_TEMPLATE, base64_images)
-
+        
         # Call GPT-4 Vision API
         gpt_response = self.gpt4_vision.vision_chat(messages)
+
+        # Save the response to a markdown file
+        with open(output_file, 'w') as f:
+            f.write(gpt_response)
+
+        print(f"Generated markdown file: {output_file}")
+    
+    def generate_md_from_pdf_text(self, pdf_path, output_file, model="gpt-4-1106-preview"):
+        """
+        Generates a markdown file from a PDF by using the GPT-4 Text API.
+
+        Args:
+            pdf_path (str): The file path to the PDF to be processed.
+            output_file (str): The file path where the markdown file will be saved.
+            model (str): The model to be used - OPENAI supported only
+        """
+        # Extract text from the PDF
+        pdf_text = extract_text_from_pdf(pdf_path)
+
+        # Create user prompt
+        user_prompt = USER_PROMPT_TEMPLATE.format(pdf_text)
+
+        # Create text messages
+        messages = self.gpt4_vision.create_text_messages(user_prompt, SYSTEM_PROMPT_TEMPLATE)
+        
+        # Call GPT-4 Text API
+        gpt_response = self.gpt4_vision.text_chat(messages, model=model)
 
         # Save the response to a markdown file
         with open(output_file, 'w') as f:
