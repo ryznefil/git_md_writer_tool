@@ -19,7 +19,7 @@ Your task is to to generate the project descriptions, follow these steps:
 4. Summarize the most important results, conclusions, or contributions of the research.
 5. Explain the potential impact or applications of the findings.
 6. Organize the information into a well-structured, readable format suitable for a GitHub repository description.
-7. Aim for a description length of 150-300 words, focusing on the most essential aspects of the project.
+7. Aim for a description length of 200-400 words, focusing on the most essential aspects of the project.
 8. Use clear, concise language that is accessible to a broad audience, including those who may not be experts in the specific research field.
 9. If applicable, mention any collaborators, funding sources, or links to related publications or resources.
 
